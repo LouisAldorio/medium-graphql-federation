@@ -16,3 +16,10 @@ type Post struct {
 }
 
 func (Post) IsEntity() {}
+
+type User struct {
+	ID    int     `json:"id"`
+	Posts []*Post `json:"posts"`
+}
+
+func (User) IsEntity() {}

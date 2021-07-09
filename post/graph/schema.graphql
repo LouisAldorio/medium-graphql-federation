@@ -1,6 +1,7 @@
 # GraphQL schema example
 #
 # https://gqlgen.com/getting-started/
+directive @goField(forceResolver: Boolean, name: String) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
 
 type Post @key(fields: "id") {
   id: Int!
@@ -21,4 +22,10 @@ input NewPost {
 
 type Mutation {
   create_post(input: NewPost!): Post!
+}
+
+# federated schema
+type User @key(fields: "id") @extends {
+  id: Int! @external
+  posts: [Post!]! @goField(forceResolver: true)
 }

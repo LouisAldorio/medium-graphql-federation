@@ -5,13 +5,19 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"myapp/graph/generated"
 	"myapp/graph/model"
+	"myapp/service"
 )
 
+func (r *entityResolver) FindPostByID(ctx context.Context, id int) (*model.Post, error) {
+	return &model.Post{
+		ID: id,
+	}, nil
+}
+
 func (r *entityResolver) FindUserByID(ctx context.Context, id int) (*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+	return service.UserFindByID(id)
 }
 
 // Entity returns generated.EntityResolver implementation.

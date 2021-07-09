@@ -31,3 +31,25 @@ func PostCreate(input model.NewPost) (*model.Post, error) {
 
 	return &newPost, err
 }
+
+func PostGetByUserID(userID int) ([]*model.Post, error) {
+
+	db,sql := config.ConnectGorm()
+	defer sql.Close()
+
+	var userPosts []*model.Post
+	err := db.Table("posts").Where("user_id = ?", userID).Find(&userPosts).Error
+
+	return userPosts, err
+}
+
+func PostGetByID(postID int) (*model.Post, error) {
+
+	db,sql := config.ConnectGorm()
+	defer sql.Close()
+
+	var post model.Post
+	err := db.Table("posts").Where("id = ?",postID).First(&post).Error
+
+	return &post, err
+}

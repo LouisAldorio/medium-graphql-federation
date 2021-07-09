@@ -39,6 +39,25 @@ func (ec *executionContext) __resolve_entities(ctx context.Context, representati
 		}
 		switch typeName {
 
+		case "Post":
+			id0, err := ec.unmarshalNInt2int(ctx, rep["id"])
+			if err != nil {
+				return nil, errors.New(fmt.Sprintf("Field %s undefined in schema.", "id"))
+			}
+
+			entity, err := ec.resolvers.Entity().FindPostByID(ctx,
+				id0)
+			if err != nil {
+				return nil, err
+			}
+
+			entity.UserID, err = ec.unmarshalNInt2int(ctx, rep["user_id"])
+			if err != nil {
+				return nil, err
+			}
+
+			list = append(list, entity)
+
 		case "User":
 			id0, err := ec.unmarshalNInt2int(ctx, rep["id"])
 			if err != nil {

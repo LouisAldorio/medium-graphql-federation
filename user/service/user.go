@@ -29,3 +29,14 @@ func UserCreate(input model.NewUser) (*model.User, error) {
 
 	return &newUser,err
 }
+
+func UserFindByID(userID int) (*model.User, error){
+	
+	db,sql := config.ConnectGorm()
+	defer sql.Close()
+
+	var user model.User
+	err := db.Table("users").Where("id = ?", userID).First(&user).Error
+
+	return &user,err
+}
