@@ -1,0 +1,24 @@
+{
+    "data": {
+      "users": [
+        {
+          "id": 1,
+          "name": "Louis Aldorio",
+          "posts": [
+            {
+              "id": 1,
+              "title": "First",
+              "content": "This is First Post",
+              "user_id": 1
+            },
+            {
+              "id": 2,
+              "title": "Second",
+              "content": "This is Second Post",
+              "user_id": 1
+            }
+          ]
+        }
+      ]
+    }
+  }

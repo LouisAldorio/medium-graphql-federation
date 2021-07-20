@@ -8,6 +8,7 @@ import (
 	"myapp/graph/generated"
 	"myapp/graph/model"
 	"myapp/service"
+	"myapp/dataloader"
 )
 
 func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) (*model.Post, error) {
@@ -19,7 +20,7 @@ func (r *queryResolver) Posts(ctx context.Context) ([]*model.Post, error) {
 }
 
 func (r *userResolver) Posts(ctx context.Context, obj *model.User) ([]*model.Post, error) {
-	return service.PostGetByUserID(obj.ID)
+	return dataloader.CtxLoaders(ctx).Posts.Load(obj.ID)
 }
 
 // Mutation returns generated.MutationResolver implementation.

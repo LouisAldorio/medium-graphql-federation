@@ -6,22 +6,19 @@ import (
 	"myapp/graph/generated"
 	"net/http"
 	"os"
-	"github.com/joho/godotenv"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+
 	// "myapp/config"
+	"myapp/dataloader"
+
+	"github.com/go-chi/chi"
 )
 
 const defaultPort = "8081"
 
 func main() {
-
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
 	// config.MigrateUp()
 
 	port := os.Getenv("PORT")
@@ -31,9 +28,12 @@ func main() {
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	router := chi.NewRouter()
+	router.Use(dataloader.DataloaderMiddleware)
+
+	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	router.Handle("/query", srv)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
